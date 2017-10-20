@@ -145,7 +145,8 @@ class QueriesController extends Controller
             'FilterExpression' => '#yr <= :start_yr ',
             'ExpressionAttributeNames'=> [ '#yr' => 'year' ],
             'ExpressionAttributeValues'=> $eav,
-            'ScanIndexForward' => false
+            'ScanIndexForward' => true, // must be index
+/*            'Limit' => 2*/
         ];
 
         echo "Scanning Movies table.\n";
@@ -154,7 +155,7 @@ class QueriesController extends Controller
             while (true) {
                 $result = $dynamodb->scan($params);
 
-                dd($result);
+
                 foreach ($result['Items'] as $i) {
                     $movie = $marshaler->unmarshalItem($i);
                     echo '<pre>';
@@ -165,6 +166,8 @@ class QueriesController extends Controller
 
                 if (isset($result['LastEvaluatedKey'])) {
                     $params['ExclusiveStartKey'] = $result['LastEvaluatedKey'];
+                    dump($params);
+                                    dd($result);
                 } else {
                     break;
                 }

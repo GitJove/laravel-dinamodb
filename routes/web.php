@@ -36,3 +36,6 @@ Route::get('scan', 'QueriesController@scan');
 
 Route::get('eloquent', 'EloquentDinamoDb@index');
 Route::get('eloquent/create', 'EloquentDinamoDb@create');
+
+
+Route::resource('dynamodb', 'DynamoDbController');
